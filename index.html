@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface de Traduction</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/diff-match-patch@1.0.5/index.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div v-if="error" class="error-message">
+            {{ error }}
+        </div>
+        
+        <div v-if="loading" class="loading-message">
+            Chargement des données...
+        </div>
+        
+        <template v-else>
+            <div class="language-selector">
+                <button @click="selectedLanguage = 'nl'" :class="{ active: selectedLanguage === 'nl' }">Néerlandais</button>
+                <button @click="selectedLanguage = 'en'" :class="{ active: selectedLanguage === 'en' }">Anglais</button>
+            </div>
+            
+            <div class="container">
+                <div class="url-list">
+                    <h2>Pages modifiées</h2>
+                    <ul>
+                        <li v-for="(url, index) in filteredUrls" 
+                            :key="index"
+                            @click="selectUrl(url)"
+                            :class="{ active: selectedUrl === url }">
+                            {{ url }}
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="corrections-list">
+                    <div class="corrections-header">
+                        <h2>Corrections</h2>
+                        <button v-if="selectedUrl" 
+                                @click="openUrl(selectedUrl)"
+                                class="access-button">
+                            Accéder à la page
+                        </button>
+                    </div>
+                    <div v-if="selectedUrl">
+                        <div v-for="(correction, index) in getCorrectionsForUrl(selectedUrl)" 
+                             :key="index" 
+                             class="correction-item">
+                            <h3>Modification {{ index + 1 }}</h3>
+                            <div class="text-container">
+                                <div class="original">
+                                    <h4>Original (FR)</h4>
+                                    <p>{{ correction.original }}</p>
+                                </div>
+                                <div class="translation">
+                                    <h4>Traduction</h4>
+                                    <p v-html="highlightDifferences(correction.translation, correction.correction)"></p>
+                                </div>
+                                <div class="correction">
+                                    <h4>Correction</h4>
+                                    <p v-html="highlightDifferences(correction.correction, correction.translation)"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="no-selection">
+                        Sélectionnez une URL pour voir les corrections
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html> 
