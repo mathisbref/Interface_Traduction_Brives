@@ -56,13 +56,9 @@
                                     <h4>Original (FR)</h4>
                                     <p>{{ correction.original }}</p>
                                 </div>
-                                <div class="translation">
-                                    <h4>Traduction</h4>
-                                    <p v-html="highlightDifferences(correction.translation, correction.correction)"></p>
-                                </div>
                                 <div class="correction">
                                     <h4>Correction</h4>
-                                    <p v-html="highlightDifferences(correction.correction, correction.translation)"></p>
+                                    <p v-html="highlightDifferences(correction.translation, correction.correction)"></p>
                                 </div>
                             </div>
                         </div>

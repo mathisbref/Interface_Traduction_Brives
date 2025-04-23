@@ -1,0 +1,12 @@
+{
+  "name": "interface-traduction-brives",
+  "version": "1.0.0",
+  "description": "Interface de traduction pour le site de Brives",
+  "scripts": {
+    "start": "http-server -p 8080 --cors",
+    "build": "echo 'Le projet est prêt à être déployé'"
+  },
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+} 
